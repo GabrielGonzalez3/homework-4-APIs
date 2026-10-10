@@ -38,9 +38,11 @@ async function load(){
     ); 
     const artist = await response.json(); 
     console.log(document.getElementById("artist-name"));
-
+    const picture = document.querySelector(".artist-image img");
+    console.log(picture);
 
     const title = document.getElementById("artist-name");
+    picture.src = artist.images[0].url;
 
     title.textContent = artist.name;
   
