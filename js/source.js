@@ -14,10 +14,15 @@ function convertMsToMinSec(ms) {
 
 // IDs and secret token should come from Spotify
 localStorage.setItem("artist_id", "31hrPUMBg96szrqNAb3oqP");
-localStorage.setItem("access_token", "BQC5lWNZMPyK2Eb3zmXn8rivCxwooVQp1dBgrf2I_r-M9cKgpCF-VRltealxyKN7DRuiOFy59b9w-zqA6xxLL2ZmSp5OgR4xIjIMAoQI7CfHtF4CRZC6W7mc6icE7PU-qrAYvPakT0Ce");
+localStorage.setItem("access_token", "BQDpvrKNUqRFnuLD4d_hIPPA2gbjDYAIjWVzSavws2RziRwrqLt3Uocwh9CZuJV1GiffkQsEYNpUAZ-OpzeRW9QxJU76aYLC8UkXz4O1ODxUKka3jUsAx1_tciY7gzLOk0bUYRhTf7BB");
 localStorage.setItem("track_id_1", "7F2MAlw2cPrXbmOdpiQ2Cj");
 localStorage.setItem("track_id_2", "6QzA31bV1KdfzIB6IFKT2p");
 localStorage.setItem("track_id_3", "0pXzwrn00Wrl2Hnri4kQJK");
+
+// Added by me, look the first album was made from track1, but can't use the other tracks because they're all from the same album so yeah need different ones
+localStorage.setItem("album_id2", "6IcDff8UAlkRq60DVFZezR");
+localStorage.setItem("album_id3", "7CyFmxO1n8VyOjgdTW1LO8");
+localStorage.setItem("album_id4", "6VQ69r1XITtS2APRucccta");
 
 
 async function load(){
@@ -27,6 +32,10 @@ async function load(){
     let trackID1 = localStorage.getItem("track_id_1");
     let trackID2 = localStorage.getItem("track_id_2");
     let trackID3 = localStorage.getItem("track_id_3");
+    // Also added by me
+    let albumID2 = localStorage.getItem("album_id_2");
+    let albumID3 = localStorage.getItem("album_id_3");
+    let albumID4 = localStorage.getItem("album_id_4");
     
     const response = await fetch( 
       `https://api.spotify.com/v1/artists/${artistID}`, 
@@ -95,6 +104,20 @@ async function load(){
     list_tracks[2].querySelector(".track-album").textContent = track3.album.name;
     list_tracks[2].querySelector(".track-number").textContent = track3.track_number;
     list_tracks[2].querySelector(".track-duration").textContent = convertMsToMinSec(track3.duration_ms);
+
+    const list_albums = document.querySelectorAll(".album-card");
+    
+  //Look I would make another fetch, but why would when I have the info I need for it in one of the the 3 tracks I have and yes I check its the same info because they're in the same album
+
+    list_albums[0].querySelector("img").src = track1.album.images[0].url;
+    list_albums[0].querySelector("h3").textContent = track1.name;
+    const year1 = track1.album.release_date.slice(0,4);
+    const type1 = track1.album.type;
+    list_albums[0].querySelector("p").textContent = `${year1} • ${type1}`;
+
+  //Also just for record, the album info can be found in the tracks so yeah
+
+
 }
 load();
 
