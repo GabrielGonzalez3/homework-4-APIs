@@ -27,6 +27,7 @@ async function load(){
     let trackID2 = localStorage.getItem("track_id_2");
     let trackID3 = localStorage.getItem("track_id_3");
     
+    //Combination of section 1 and 2
     const response = await fetch( 
       `https://api.spotify.com/v1/artists/${artistID}`, 
       { 
@@ -41,10 +42,10 @@ async function load(){
     console.log(picture);
 
     const title = document.getElementById("artist-name");
-    picture.src = artist.images[0].url;
+    picture.src = artist.images[0].url; //Note there were multiple images
 
     title.textContent = artist.name;
-  
+  //This is the 3rd section, had to make multiple fetch as different tracks
      const answer1 = await fetch( 
       `https://api.spotify.com/v1/tracks/${trackID1}`, 
       { 
@@ -95,6 +96,8 @@ async function load(){
     list_tracks[2].querySelector(".track-number").textContent = track3.track_number;
     list_tracks[2].querySelector(".track-duration").textContent = convertMsToMinSec(track3.duration_ms);
 
+    //Alright start of section 4, note had to do it like this instead of just running it from albums as CORS block me from doing it
+
     const list_albums = document.querySelectorAll(".album-card");
 
     const decision = await fetch( 
@@ -107,12 +110,29 @@ async function load(){
     ); 
     const album_start = await decision.json(); 
 
-    list_albums[0].querySelector("img").src = album_start.items[0].images[0].url;
+    list_albums[0].querySelector("img").src = album_start.items[0].images[0].url; //First album with first picture size
     list_albums[0].querySelector("h3").textContent = album_start.items[0].name;
     const year1 = album_start.items[0].release_date.slice(0,4);
     const type1 = album_start.items[0].type;
     list_albums[0].querySelector("p").textContent = `${year1} • ${type1}`;
 
+    list_albums[1].querySelector("img").src = album_start.items[1].images[0].url; //Second album with first picture size
+    list_albums[1].querySelector("h3").textContent = album_start.items[1].name;
+    const year2 = album_start.items[1].release_date.slice(0,4);
+    const type2 = album_start.items[1].type;
+    list_albums[1].querySelector("p").textContent = `${year2} • ${type2}`;
+
+    list_albums[2].querySelector("img").src = album_start.items[2].images[0].url; //Third album with first picture size
+    list_albums[2].querySelector("h3").textContent = album_start.items[2].name;
+    const year3 = album_start.items[2].release_date.slice(0,4);
+    const type3 = album_start.items[2].type;
+    list_albums[2].querySelector("p").textContent = `${year3} • ${type3}`;
+
+    list_albums[3].querySelector("img").src = album_start.items[3].images[0].url; //Forth album with first picture size
+    list_albums[3].querySelector("h3").textContent = album_start.items[3].name;
+    const year4 = album_start.items[3].release_date.slice(0,4);
+    const type4 = album_start.items[3].type;
+    list_albums[3].querySelector("p").textContent = `${year4} • ${type4}`;
 
 }
 load();
