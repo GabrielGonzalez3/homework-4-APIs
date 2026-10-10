@@ -19,12 +19,6 @@ localStorage.setItem("track_id_1", "7F2MAlw2cPrXbmOdpiQ2Cj");
 localStorage.setItem("track_id_2", "6QzA31bV1KdfzIB6IFKT2p");
 localStorage.setItem("track_id_3", "0pXzwrn00Wrl2Hnri4kQJK");
 
-// Added by me, look the first album was made from track1, but can't use the other tracks because they're all from the same album so yeah need different ones
-localStorage.setItem("album_id2", "6IcDff8UAlkRq60DVFZezR");
-localStorage.setItem("album_id3", "7CyFmxO1n8VyOjgdTW1LO8");
-localStorage.setItem("album_id4", "6VQ69r1XITtS2APRucccta");
-
-
 async function load(){
     
     let artistID = localStorage.getItem("artist_id");
@@ -32,10 +26,6 @@ async function load(){
     let trackID1 = localStorage.getItem("track_id_1");
     let trackID2 = localStorage.getItem("track_id_2");
     let trackID3 = localStorage.getItem("track_id_3");
-    // Also added by me
-    let albumID2 = localStorage.getItem("album_id_2");
-    let albumID3 = localStorage.getItem("album_id_3");
-    let albumID4 = localStorage.getItem("album_id_4");
     
     const response = await fetch( 
       `https://api.spotify.com/v1/artists/${artistID}`, 
@@ -106,16 +96,22 @@ async function load(){
     list_tracks[2].querySelector(".track-duration").textContent = convertMsToMinSec(track3.duration_ms);
 
     const list_albums = document.querySelectorAll(".album-card");
-    
-  //Look I would make another fetch, but why would when I have the info I need for it in one of the the 3 tracks I have and yes I check its the same info because they're in the same album
 
-    list_albums[0].querySelector("img").src = track1.album.images[0].url;
-    list_albums[0].querySelector("h3").textContent = track1.name;
-    const year1 = track1.album.release_date.slice(0,4);
-    const type1 = track1.album.type;
+    const decision = await fetch( 
+      `https://api.spotify.com/v1/artists/${artistID}/albums`, 
+      { 
+        headers: { 
+        Authorization: `Bearer ${accessToken}` 
+        } 
+      } 
+    ); 
+    const album_start = await decision.json(); 
+
+    list_albums[0].querySelector("img").src = album_start.items[0].images[0].url;
+    list_albums[0].querySelector("h3").textContent = album_start.items[0].name;
+    const year1 = album_start.items[0].release_date.slice(0,4);
+    const type1 = album_start.items[0].type;
     list_albums[0].querySelector("p").textContent = `${year1} • ${type1}`;
-
-  //Also just for record, the album info can be found in the tracks so yeah
 
 
 }
